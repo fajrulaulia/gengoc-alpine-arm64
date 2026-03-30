@@ -1,63 +1,149 @@
 # Gengoc
 
-Gengoc is a lightweight Protocol Buffers (protobuf) compiler and gRPC generator designed specifically for ARM architecture. It simplifies the process of generating Go code from .proto files.
+**Gengoc** is a lightweight, Docker-based Protocol Buffers (protobuf) and gRPC code generator designed for **ARM64 environments**. It simplifies generating Go code from `.proto` files without requiring complex local setup.
 
-## Features
+---
 
-- Supports ARM architecture
-- Generates Go protobuf and gRPC code
-- Lightweight Alpine-based container
-- Easily mount your .proto files for code generation
+## ✨ Features
 
-## How to Run
+* 🧩 Generate Go protobuf & gRPC code
+* ⚡ Optimized for ARM64 architecture
+* 🐳 Fully Dockerized (no local dependency needed)
+* 🪶 Lightweight (Alpine-based image)
+* 📦 Easy integration into CI/CD pipelines
 
-```shell
+---
+
+## 🚀 Quick Start
+
+Run the container with mounted directories:
+
+```bash
 docker run --rm --name gengoc \
-         -v "./example/:/fw/proto/" \
-         -v "./generated:/fw/generated" \
-           faaawidia/gengoc-alpine-arm64:latest
+  -v "./example/:/fw/proto/" \
+  -v "./generated:/fw/generated" \
+  faaawidia/gengoc-alpine-arm64:latest
 ```
 
-Command Breakdown:
-- --rm → Removes the container after execution.
-- --name gengoc → Names the container gengoc.
-- -v "./example/:/fw/proto/" → Mounts your local example/ folder (containing .proto files) into the container.
-- -v "./generated:/fw/generated" → Mounts the generated/ folder to store the generated Go files.
-- faaawidia/gengoc-alpine-arm64:latest → Uses the latest ARM-based Gengoc image.
+---
 
-## Example
+## 📂 How It Works
 
-Given:
-here project with directory:
-```bash
+Gengoc uses pre-installed tools inside the container:
+
+* `protoc`
+* `protoc-gen-go`
+* `protoc-gen-go-grpc`
+
+### Directory Mapping
+
+| Local Path     | Container Path  | Description               |
+| -------------- | --------------- | ------------------------- |
+| `./example/`   | `/fw/proto/`    | Input `.proto` files      |
+| `./generated/` | `/fw/generated` | Generated Go files output |
+
+---
+
+## 📦 Output Example
+
+After running, you will get:
+
+```
+generated/
+├── hello.pb.go
+├── hello_grpc.pb.go
+```
+
+---
+
+## 🧪 Example Project Structure
+
+```
 .
 ├── core/
-│   ├── proto/               # Proto files (e.g., blog.proto)
+│   ├── proto/               # Proto files
 │   ├── adapter/
-│   │   ├── grpc/            # here we will make output generated
+│   │   ├── grpc/            # Generated output
 ├── Dockerfile
 ├── Makefile
 └── README.md
-
 ```
 
-just run
+### Run with Custom Structure
+
 ```bash
 docker run --rm --name gengoc \
-         -v "./core/proto/:/fw/proto/" \
-         -v "./core/adapter/grpc/:/fw/generated" \
-           faaawidia/gengoc-alpine-arm64:latest
-
+  -v "./core/proto/:/fw/proto/" \
+  -v "./core/adapter/grpc/:/fw/generated" \
+  faaawidia/gengoc-alpine-arm64:latest
 ```
-## License
+
+---
+
+## ⚠️ Troubleshooting
+
+### Permission Issues
+
+If you encounter permission errors:
+
+```bash
+sudo docker run ...
+```
+
+or fix folder permissions:
+
+```bash
+chmod -R 777 generated/
+```
+
+### No Output Generated
+
+* Ensure `.proto` files exist in the mounted directory
+* Verify mount paths are correct
+
+---
+
+## 💡 Why Gengoc?
+
+* No need to install protobuf or plugins locally
+* Works out-of-the-box on ARM64 machines
+* Minimal setup for fast development
+* Ideal for containerized workflows
+
+---
+
+## 🔧 Roadmap (Future Improvements)
+
+* [ ] Support custom output paths via arguments/env
+* [ ] Multi-architecture support (amd64 + arm64)
+* [ ] CLI wrapper (without raw docker command)
+* [ ] Plugin support (grpc-gateway, OpenAPI)
+* [ ] Version tagging & release management
+
+---
+
+## 📄 License
 
 This project is licensed under the MIT License.
 
+---
 
-## Contributions
+## 🤝 Contributions
 
-Feel free to contribute by submitting issues or pull requests.
+Contributions are welcome! Feel free to:
 
-🔗 Connect with Me
+* Open issues
+* Submit pull requests
+* Suggest improvements
 
-📧 Telegram: t.me/fajrulaulia
+---
+
+## 🔗 Contact
+
+* Telegram: https://t.me/fajrulaulia
+
+---
+
+## ⭐ Support
+
+If you find this useful, consider giving it a star ⭐
